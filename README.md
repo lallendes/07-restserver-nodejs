@@ -4,5 +4,5 @@
 Esta es una aplicación del curso de nodejs utilizando
 - express
 - mongoDB
-- bode-parser
+- body-parser
 - mongoose
