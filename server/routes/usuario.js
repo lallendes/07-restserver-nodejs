@@ -83,7 +83,59 @@ app.put('/usuario/:id', (req, res) => {
 });
 
 app.delete('/usuario/:id', (req, res) => {
-    res.json('delete Usuario');
+    let id = req.params.id;
+    let fieldActive = {
+        estado: false
+    };
+
+    Usuario.findByIdAndUpdate(id, fieldActive, { new: true }, (err, usrDelete) => {
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                message: err
+            });
+        };
+        if (!usrDelete) {
+            return res.status(400).json({
+                ok: false,
+                message: 'usuario ha desactivar no encontrado'
+            });
+        }
+        res.json({
+            ok: true,
+            message: 'usuario desactivado correctamente',
+            usuario: usrDelete
+        });
+
+    });
 });
+
+app.unlock('/usuario/:id', (req, res) => {
+    let id = req.params.id;
+    let fieldActive = {
+        estado: true
+    };
+
+    Usuario.findByIdAndUpdate(id, fieldActive, { new: true }, (err, usrActive) => {
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                message: 'usuario ha activar no encontrado',
+                err
+            });
+        };
+        if (!usrActive) {
+            return res.status(400).json({
+                ok: false,
+                message: 'usuario ha activar no encontrado'
+            });
+        };
+        res.json({
+            ok: true,
+            message: 'usuario activado',
+            usuario: usrActive
+        });
+    });
+})
 
 module.exports = app;
